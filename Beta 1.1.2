@@ -1,0 +1,1262 @@
+/**
+ * @name Hollow Knight FrostedGlass
+ * @author Bestie Colton
+ * @version 1.0.0
+ * @description We love a Hollow Knight Discord theme guys!
+ * @source https://discordstyles.github.io/FrostedGlass/
+ */
+
+@import url("https://discordstyles.github.io/FrostedGlass/dist/FrostedGlass.css");
+
+/* Optional add-ons */
+@import url("https://monstrousdev.github.io/themes/addons/user-tags.css");        /* BlackBox / user tags */
+@import url("https://gibbu.github.io/BetterDiscord-Themes/addons/windows-titlebar.css"); /* Classic Windows titlebar */
+
+/*───────────────────────────────────────────────────────────────
+ 🦋   Theme Variables – Hollow Knight Aesthetic
+───────────────────────────────────────────────────────────────*/
+:root {
+  /*  ░░ Background ░░  */
+  --background-image: url("https://raw.githubusercontent.com/notakidoo/HK-Image-/refs/heads/main/Hollow%20Knight_%20Silksong%204K%20Wallpaper.jpg");
+  --background-image-blur: 2px;
+  --background-image-size: cover;
+  --background-image-position: center;
+
+  /*  ░░ Popouts / Modals ░░  */
+  --popout-modal-image: var(--background-image);
+  --popout-modal-blur: 12px;
+  --popout-modal-size: cover;
+  --popout-modal-position: center;
+
+  /*  ░░ Home Button ░░  */
+  --home-button-image: url("https://raw.githubusercontent.com/notakidoo/Discord-11-COPY/refs/heads/main/yc5af7xfbkrf1.png"); /* replace with a small Hollow Knight icon if desired */
+  --home-button-size: contain;
+  --home-button-position: center;
+
+  /*  ░░ Brightness Layers ░░  */
+  --serverlist-brightness: 0.70;
+  --left-brightness: 0.55;
+  --middle-brightness: 0.45;
+  --right-brightness: 0.35;
+  --popout-modal-brightness: 0.55;
+
+  /*  ░░ Accent Gradient ░░  */
+  --gradient-primary: 40, 60, 100;   /* deep navy */
+  --gradient-secondary: 90, 130, 170;/* cool blue silver */
+  --gradient-direction: 330deg;
+
+  /*  ░░ Tint & Glow ░░  */
+  --tint-colour: 140,170,220; /* pale blue-silver tint */
+  --tint-brightness: 0.08;
+
+  /*  ░░ Windows / Corners ░░  */
+  --window-padding: 20px;
+  --window-roundness: 14px;
+  --scrollbar-colour: rgba(200,200,255,0.08);
+  --link-colour: #9cc2ff;
+
+  /*  ░░ Typography ░░  */
+  --font: "Segoe UI Variable", "Segoe UI", sans-serif;
+
+  /*  ░░ Do not touch ░░  */
+  --update-notice-1: none;
+}
+
+/*───────────────────────────────────────────────────────────────
+ 💠  Extra Styling Touches
+───────────────────────────────────────────────────────────────*/
+
+/* Slight inner glow on panels for that ethereal cavern feel */
+.container_a6d69a, .chatContent_a7d72e, .membersWrap_cbd271 {
+  box-shadow: inset 0 0 20px rgba(120,150,200,0.1);
+}
+
+/* Brighten mentions and highlights */
+.mention, .wrapper_ef319f {
+  background-color: rgba(180,200,255,0.15) !important;
+  color: #d7e1ff !important;
+  border-radius: 6px;
+}
+
+/* Softer scrollbar for minimal intrusion */
+::-webkit-scrollbar-thumb {
+  background-color: rgba(160,180,220,0.15) !important;
+  border-radius: 10px;
+}
+
+/* Titles and headers in shimmering silver */
+.title_a1c4b0, .titleText_a1c4b0, .headerText_c59ef5 {
+  color: #cfdcff !important;
+  text-shadow: 0 0 6px rgba(120,140,200,0.3);
+}
+
+/*───────────────────────────────────────────────────────────────
+ Fix: constrain and control the background so it doesn't "bleed" outside
+ the FrostedGlass / Discord window area. The imported FrostedGlass
+ stylesheet sometimes applies the image in a way that appears
+ excessively large or repeated. These overrides force a single,
+ centered, non-repeating, fixed background and try several selectors
+ used by different FrostedGlass versions so it will work more reliably.
+───────────────────────────────────────────────────────────────*/
+
+/* General safe defaults: single image, centered, no-repeat, cover */
+:root {
+  --_bg-size: var(--background-image-size, cover);
+  --_bg-pos: var(--background-image-position, center);
+}
+
+/* Target common wrappers used by FrostedGlass / Discord clients */
+html, body, #app-mount, .app, .frostedGlass-root, .frostedGlass-background, .fg-background, .fg-root {
+  background-image: var(--background-image) !important;
+  background-size: var(--_bg-size) !important;
+  background-position: var(--_bg-pos) !important;
+  background-repeat: no-repeat !important;
+  background-attachment: fixed !important; /* prevents the image from shifting/tiling when panels move */
+}
+
+/* If the imported FrostedGlass applies the image to a pseudo-element, make sure those are constrained too */
+.frostedGlass-root::before,
+.fg-background::before,
+.fg-root::before {
+  content: "" !important;
+  background-image: var(--background-image) !important;
+  background-size: var(--_bg-size) !important;
+  background-position: var(--_bg-pos) !important;
+  background-repeat: no-repeat !important;
+  background-attachment: fixed !important;
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: -1000 !important; /* keep it behind UI layers */
+}
+
+/* If FrostedGlass uses an absolutely positioned 'window' background inside the client,
+   limit its max width/height so it won't overflow the visible window */
+.fg-background, .frostedGlass-root, .fg-root {
+  max-width: 100vw !important;
+  max-height: 100vh !important;
+  overflow: hidden !important;
+}
+
+/* In case parts of the background are still visible outside the client, clip it */
+#app-mount, .app, .frostedGlass-root {
+  -webkit-mask-image: linear-gradient(#000 0 100%); /* helps mask overflow on some clients */
+  mask-image: linear-gradient(#000 0 100%);
+}
+
+/* Small tweak: ensure popouts/modals using the same variable also use no-repeat and centered */
+.popout, .modal, .popouts, .modal-3l7xmz {
+  background-image: var(--popout-modal-image, none) !important;
+  background-size: var(--popout-modal-size, cover) !important;
+  background-position: var(--popout-modal-position, center) !important;
+  background-repeat: no-repeat !important;
+}
+
+/* End of overrides */
+
+
+/* Frosted glass fixes for server sidebar (guilds) and active call bar
+   Add these to force a consistent glass effect on elements FrostedGlass
+   didn't target or that have different class names across clients. */
+
+:root{
+  /* local glass blur for UI panels (adjust this value) */
+  --glass-blur: 8px; /* smaller = less blur, larger = more blur */
+  --glass-tint: rgba(18,24,32,0.45); /* background tint behind blur */
+  --glass-border: rgba(255,255,255,0.06);
+}
+
+/* Common/generic selectors for guild sidebar */
+[class*="guild"], [class*="guilds"], [class*="server"], /* generic names */
+.guildsWrapper, .guilds, .guilds-2Jb3vA, .guildsWrapper-1SF0Q6 {
+  background-color: var(--glass-tint) !important;
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(120%) !important;
+  backdrop-filter: blur(var(--glass-blur)) saturate(120%) !important;
+  border: 1px solid var(--glass-border) !important;
+  box-shadow: 0 4px 18px rgba(0,0,0,0.35) inset, 0 8px 30px rgba(0,0,0,0.25) !important;
+  border-radius: 12px !important;
+  overflow: hidden !important;
+}
+
+/* Active / connected call small popup / bar bottom-left */
+[class*="voice"], [class*="call"], .voiceConnected-1Q12kP, .callout-2S2Q8G, .voice-3W5u4b, .call-3Lq7b9 {
+  background-color: var(--glass-tint) !important;
+  -webkit-backdrop-filter: blur(calc(var(--glass-blur) - 2px)) saturate(120%) !important;
+  backdrop-filter: blur(calc(var(--glass-blur) - 2px)) saturate(120%) !important;
+  border: 1px solid var(--glass-border) !important;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.35) !important;
+  border-radius: 12px !important;
+}
+
+/* Ensure popouts that represent call controls also get tinted glass */
+.popout, .popover, .callPopout-*, .callPopout, .popout-3jL2FQ {
+  background-color: var(--glass-tint) !important;
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(110%) !important;
+  backdrop-filter: blur(var(--glass-blur)) saturate(110%) !important;
+  border: 1px solid var(--glass-border) !important;
+}
+
+/* Some clients put the UI background in pseudo-elements */
+[class*="guild"]::before,
+[class*="voice"]::before,
+.frostedGlass-root::before,
+.fg-background::before,
+.fg-root::before {
+  /* keep pseudo-element behind content but ensure glass effect */
+  content: "" !important;
+  background: transparent !important;
+  -webkit-backdrop-filter: blur(var(--glass-blur)) !important;
+  backdrop-filter: blur(var(--glass-blur)) !important;
+  pointer-events: none !important;
+}
+
+/* If any element uses fully opaque background, force a bit of transparency so blur shows */
+[class*="guild"] *, [class*="voice"] * {
+  background-clip: padding-box !important;
+}
+
+
+
+/* Additional overrides to force transparency and frosted glass on the active call UI.
+   Append these to the end of your gpt.theme.css. If a selector doesn't match your
+   client, inspect the active call element in DevTools and add its class to the selectors. */
+
+:root {
+  /* tweak to make call bar blur slightly different if you want */
+  --call-bar-blur: 6px; /* lower = less blur, higher = more blur */
+  --call-bar-tint: rgba(18,24,32,0.36); /* semi-transparent tint */
+}
+
+/* Broad selectors for active call / voice connected bar + children */
+[class*="voiceConnected"],
+[class*="voice"], 
+[class*="call"], 
+[class*="connectedCall"], 
+.callbar, 
+.callBar, 
+.voiceConnected-1Q12kP, 
+.connectedVoice-*, 
+.call-3Lq7b9, 
+.callbar-3g6m1V,
+.callout-2S2Q8G,
+.voice-3W5u4b {
+  background: transparent !important;
+  background-color: transparent !important;
+  -webkit-backdrop-filter: blur(var(--call-bar-blur)) saturate(120%) !important;
+  backdrop-filter: blur(var(--call-bar-blur)) saturate(120%) !important;
+  border: 1px solid rgba(255,255,255,0.05) !important;
+  box-shadow: none !important;
+  color: inherit !important;
+}
+
+/* If the call bar uses inner containers that draw opaque backgrounds, force those transparent too */
+[class*="voice"] > *, [class*="call"] > *, .callbar * , .voiceConnected-1Q12kP * {
+  background: transparent !important;
+  background-color: transparent !important;
+  -webkit-backdrop-filter: blur(var(--call-bar-blur)) saturate(110%) !important;
+  backdrop-filter: blur(var(--call-bar-blur)) saturate(110%) !important;
+}
+
+/* Pseudo-elements some clients use for the call background */
+[class*="voice"]::before,
+[class*="call"]::before,
+.callbar::before,
+.voiceConnected-1Q12kP::before,
+.callout-2S2Q8G::before {
+  content: "" !important;
+  position: absolute !important;
+  inset: 0 !important;
+  background: var(--call-bar-tint) !important;
+  -webkit-backdrop-filter: blur(var(--call-bar-blur)) !important;
+  backdrop-filter: blur(var(--call-bar-blur)) !important;
+  pointer-events: none !important;
+  z-index: 0 !important;
+}
+
+/* Ensure content sits above the pseudo background */
+[class*="voice"] > :not(::before),
+[class*="call"] > :not(::before),
+.callbar > :not(::before) {
+  position: relative !important;
+  z-index: 1 !important;
+}
+
+/* If an element explicitly sets opacity or solid rgba, override it */
+[class*="voice"][style*="background"], [class*="call"][style*="background"], .callbar[style*="background"] {
+  background: transparent !important;
+  background-color: transparent !important;
+}
+
+/* Final fallback – force any element anchored at bottom-left (common for call widgets)
+   to be semi-transparent with blur, in case the exact class name is different. */
+body > div[role="presentation"] [style*="position: fixed"], 
+body > div[role="presentation"] [style*="bottom"] {
+  background: var(--call-bar-tint) !important;
+  -webkit-backdrop-filter: blur(var(--call-bar-blur)) !important;
+  backdrop-filter: blur(var(--call-bar-blur)) !important;
+}
+
+/* End call-bar overrides */
+
+/* Final targeted overrides for the stubborn active-call widget box + icons.
+   These force inner containers & icons to be transparent and use the frosted blur. */
+
+:root {
+  --call-widget-strong-blur: 8px;  /* adjust blur intensity for call box */
+  --call-widget-tint: rgba(18,24,32,0.36); /* semi-transparent tint beneath blur */
+}
+
+/* Super-broad target for call/voice widgets and their common inner wrappers */
+[class*="voice"], [class*="call"], [class*="connected"], .voiceConnected-1Q12kP, .call-3Lq7b9, .callbar, .callbar-3g6m1V, .callout-2S2Q8G {
+  background: transparent !important;
+  background-color: transparent !important;
+  -webkit-backdrop-filter: blur(var(--call-widget-strong-blur)) saturate(120%) !important;
+  backdrop-filter: blur(var(--call-widget-strong-blur)) saturate(120%) !important;
+  box-shadow: none !important;
+  border: 1px solid rgba(255,255,255,0.04) !important;
+  color: inherit !important;
+}
+
+/* Force any inner container that paints a solid box to be transparent */
+[class*="voice"] > *, [class*="call"] > *, .callbar *, .call-3Lq7b9 * {
+  background: transparent !important;
+  background-color: transparent !important;
+  -webkit-backdrop-filter: blur(calc(var(--call-widget-strong-blur) - 2px)) saturate(110%) !important;
+  backdrop-filter: blur(calc(var(--call-widget-strong-blur) - 2px)) saturate(110%) !important;
+}
+
+/* Target common icon buttons inside the widget (two icons you mentioned) */
+[class*="voice"] button, [class*="call"] button, .callbar button, .voiceConnected-1Q12kP button, .call-3Lq7b9 button {
+  background: transparent !important;
+  background-color: transparent !important;
+  -webkit-backdrop-filter: none !important; /* icons shouldn't be blurred themselves */
+  backdrop-filter: none !important;
+  box-shadow: none !important;
+  border: none !important;
+}
+
+/* If the widget uses pseudo-elements for the background, override them */
+[class*="voice"]::before,
+[class*="call"]::before,
+.callbar::before,
+.callout-2S2Q8G::before,
+.voiceConnected-1Q12kP::before {
+  content: "" !important;
+  position: absolute !important;
+  inset: 0 !important;
+  background: var(--call-widget-tint) !important;
+  -webkit-backdrop-filter: blur(var(--call-widget-strong-blur)) !important;
+  backdrop-filter: blur(var(--call-widget-strong-blur)) !important;
+  pointer-events: none !important;
+  z-index: 0 !important;
+}
+
+/* Ensure content sits above the pseudo background (prevents being hidden) */
+[class*="voice"] > :not(::before),
+[class*="call"] > :not(::before),
+.callbar > :not(::before) {
+  position: relative !important;
+  z-index: 1 !important;
+}
+
+/* Last-resort fallback: target fixed, bottom-left widgets (common placement for call UI) */
+body > div[role="presentation"] [style*="position: fixed"][style*="bottom"], 
+body > div[role="presentation"] [style*="bottom"] {
+  background: var(--call-widget-tint) !important;
+  -webkit-backdrop-filter: blur(var(--call-widget-strong-blur)) !important;
+  backdrop-filter: blur(var(--call-widget-strong-blur)) !important;
+  background-color: transparent !important;
+}
+
+/* Harmonize call/widgets with the server (guild) sidebar frosted style.
+   Reuse the same tint/blur/border values so accents match precisely. */
+
+/* Reuse server-bar variables for call widgets */
+:root {
+  --call-bar-blur: var(--glass-blur, 8px);
+  --call-bar-tint: var(--glass-tint, rgba(18,24,32,0.45));
+  --call-bar-border: var(--glass-border, rgba(255,255,255,0.06));
+}
+
+/* Apply identical frosted styling to call widgets and popups */
+[class*="voice"], [class*="call"], [class*="connected"], .voiceConnected-1Q12kP, .call-3Lq7b9, .callbar, .callbar-3g6m1V, .callout-2S2Q8G {
+  background: transparent !important;
+  background-color: transparent !important;
+  -webkit-backdrop-filter: blur(var(--call-bar-blur)) saturate(120%) !important;
+  backdrop-filter: blur(var(--call-bar-blur)) saturate(120%) !important;
+  border: 1px solid var(--call-bar-border) !important;
+  box-shadow: none !important;
+  color: inherit !important;
+}
+
+/* Inner containers use a slightly reduced blur so content remains legible but visually the same */
+[class*="voice"] > *, [class*="call"] > *, .callbar *, .call-3Lq7b9 * {
+  background: transparent !important;
+  background-color: transparent !important;
+  -webkit-backdrop-filter: blur(calc(var(--call-bar-blur) - 2px)) saturate(110%) !important;
+  backdrop-filter: blur(calc(var(--call-bar-blur) - 2px)) saturate(110%) !important;
+}
+
+/* Keep icon buttons visually consistent but not themselves blurred */
+[class*="voice"] button, [class*="call"] button, .callbar button, .voiceConnected-1Q12kP button, .call-3Lq7b9 button {
+  background: transparent !important;
+  background-color: transparent !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+  box-shadow: none !important;
+  border: none !important;
+}
+
+/* Pseudo-element background for widget -> use same tint + blur */
+[class*="voice"]::before,
+[class*="call"]::before,
+.callbar::before,
+.callout-2S2Q8G::before,
+.voiceConnected-1Q12kP::before {
+  content: "" !important;
+  position: absolute !important;
+  inset: 0 !important;
+  background: var(--call-bar-tint) !important;
+  -webkit-backdrop-filter: blur(var(--call-bar-blur)) !important;
+  backdrop-filter: blur(var(--call-bar-blur)) !important;
+  pointer-events: none !important;
+  z-index: 0 !important;
+}
+
+/* Ensure content is above the pseudo background */
+[class*="voice"] > :not(::before),
+[class*="call"] > :not(::before),
+.callbar > :not(::before) {
+  position: relative !important;
+  z-index: 1 !important;
+}
+/* === FINAL: Force server-bar frosted appearance as the single source of truth ===
+   Place this block at the very end of gpt.theme.css so it overrides everything above.
+   This uses the server bar values as authoritative and forces call widgets/popups
+   and their children/pseudo-elements to use the exact same tint, blur and border. */
+
+/* 1) Server bar "source of truth" variables (set exactly to the values you want) */
+:root {
+  --glass-blur: 8px !important;                  /* server bar blur intensity */
+  --glass-tint: rgba(18,24,32,0.45) !important;  /* server bar tint color */
+  --glass-border: rgba(255,255,255,0.06) !important; /* server bar border */
+}
+
+/* 2) Remove/neutralize any alternate call-specific variables that may exist earlier */
+:root {
+  --call-bar-blur: unset !important;
+  --call-bar-tint: unset !important;
+  --call-bar-border: unset !important;
+  --call-widget-strong-blur: unset !important;
+  --call-widget-tint: unset !important;
+}
+
+/* 3) Apply exact same frosted style to call widgets, popups and any fixed bottom-left widget.
+   Use high specificity and !important so this block wins. */
+html body /* anchor */ 
+[class*="voice"], [class*="call"], [class*="connected"], 
+.voiceConnected-1Q12kP, .call-3Lq7b9, .callbar, .callbar-3g6m1V, .callout-2S2Q8G,
+body > div[role="presentation"] [style*="position: fixed"][style*="bottom"],
+body > div[role="presentation"] [style*="bottom"] {
+  background: transparent !important;
+  background-color: transparent !important;
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(120%) !important;
+  backdrop-filter: blur(var(--glass-blur)) saturate(120%) !important;
+  border: 1px solid var(--glass-border) !important;
+  box-shadow: none !important;
+  color: inherit !important;
+}
+
+/* Inner containers: slightly reduced blur for legibility but still matching look */
+html body [class*="voice"] > *, html body [class*="call"] > *, html body .callbar *, html body .call-3Lq7b9 * {
+  background: transparent !important;
+  background-color: transparent !important;
+  -webkit-backdrop-filter: blur(calc(var(--glass-blur) - 2px)) saturate(110%) !important;
+  backdrop-filter: blur(calc(var(--glass-blur) - 2px)) saturate(110%) !important;
+}
+
+/* Icons/buttons inside widgets should be transparent and not blurred themselves */
+html body [class*="voice"] button, html body [class*="call"] button, html body .callbar button, html body .voiceConnected-1Q12kP button, html body .call-3Lq7b9 button {
+  background: transparent !important;
+  background-color: transparent !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+  box-shadow: none !important;
+  border: none !important;
+}
+
+/* Pseudo-element backgrounds: use the same tint + blur so overlay color matches exactly */
+html body [class*="voice"]::before,
+html body [class*="call"]::before,
+html body .callbar::before,
+html body .callout-2S2Q8G::before,
+html body .voiceConnected-1Q12kP::before {
+  content: "" !important;
+  position: absolute !important;
+  inset: 0 !important;
+  background: var(--glass-tint) !important;
+  -webkit-backdrop-filter: blur(var(--glass-blur)) !important;
+  backdrop-filter: blur(var(--glass-blur)) !important;
+  pointer-events: none !important;
+  z-index: 0 !important;
+}
+
+/* Ensure content layers above the pseudo background */
+html body [class*="voice"] > :not(::before),
+html body [class*="call"] > :not(::before),
+html body .callbar > :not(::before) {
+  position: relative !important;
+  z-index: 1 !important;
+}
+
+/* Safety: if any element has inline style background, force it transparent.
+   This is aggressive but necessary for stubborn clients. */
+html body [style*="background"] {
+  background: transparent !important;
+  background-color: transparent !important;
+}
+
+/* Targeted fixes for the remaining active-call widget pieces you pasted.
+   This block forces the same server-bar frosted look on the call widget,
+   removes odd icon/animation colorization, and disables unwanted avatar blur/masks.
+   Paste this at the very end of gpt.theme.css and reload the theme. */
+
+/* Reuse server-bar variables (single source of truth) */
+:root {
+  --glass-blur: 8px !important;
+  --glass-tint: rgba(18,24,32,0.45) !important;
+  --glass-border: rgba(255,255,255,0.06) !important;
+}
+
+/* Anchor with high specificity so it overrides earlier rules */
+html body .voiceButtonsContainer_e131a9,
+html body .voiceCallWrapper_a21736,
+html body .participant_c8dbe9,
+html body .spriteWrapper_c8dbe9,
+html body .callbar,
+html body [class*="voice"],
+html body [class*="call"] {
+  background: transparent !important;
+  background-color: transparent !important;
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(120%) !important;
+  backdrop-filter: blur(var(--glass-blur)) saturate(120%) !important;
+  border: 1px solid var(--glass-border) !important;
+  box-shadow: none !important;
+  color: inherit !important;
+}
+
+/* Buttons inside voiceButtonsContainer: make them visually match server bar and remove weird tints.
+   Keep icons crisp by not blurring the icon SVG itself. */
+html body .voiceButtonsContainer_e131a9 .button__67645,
+html body .voiceButtonsContainer_e131a9 .button__201d5 {
+  background: transparent !important;
+  background-color: transparent !important;
+  border: 1px solid rgba(255,255,255,0.03) !important;
+  -webkit-backdrop-filter: blur(var(--glass-blur)) !important;
+  backdrop-filter: blur(var(--glass-blur)) !important;
+  box-shadow: none !important;
+}
+
+/* Icon SVG containers: remove any tinting or color animation that makes them look weird */
+html body .voiceButtonsContainer_e131a9 .lottieIcon__5eb9b,
+html body .voiceButtonsContainer_e131a9 .lottieIconColors__5eb9b,
+html body .voiceButtonsContainer_e131a9 svg {
+  -webkit-filter: none !important;
+  filter: none !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  mix-blend-mode: normal !important;
+  color: inherit !important;
+  fill: currentColor !important;
+  stroke: none !important;
+  opacity: 1 !important;
+}
+
+/* Force any pseudo-element backgrounds for the widget to use the same tint */
+html body .voiceCallWrapper_a21736::before,
+html body .voiceButtonsContainer_e131a9::before,
+html body .participant_c8dbe9::before,
+html body .callAvatarMaskContainer_f910d0::before {
+  content: "" !important;
+  position: absolute !important;
+  inset: 0 !important;
+  background: var(--glass-tint) !important;
+  -webkit-backdrop-filter: blur(var(--glass-blur)) !important;
+  backdrop-filter: blur(var(--glass-blur)) !important;
+  pointer-events: none !important;
+  z-index: 0 !important;
+}
+
+/* Ensure children/content sits above the pseudo background */
+html body .voiceCallWrapper_a21736 > :not(::before),
+html body .voiceButtonsContainer_e131a9 > :not(::before),
+html body .participant_c8dbe9 > :not(::before) {
+  position: relative !important;
+  z-index: 1 !important;
+}
+
+/* Inner avatar wrapper: remove additional masks/filters that cause the odd PFP blur */
+html body .callAvatarMask_f910d0,
+html body .callAvatarMaskContainer_f910d0,
+html body .svg__2338f,
+html body .wrapper_f910d0,
+html body .border_f910d0 {
+  background: transparent !important;
+  background-color: transparent !important;
+  -webkit-backdrop-filter: blur(calc(var(--glass-blur) - 2px)) saturate(110%) !important;
+  backdrop-filter: blur(calc(var(--glass-blur) - 2px)) saturate(110%) !important;
+  box-shadow: none !important;
+  border: 1px solid rgba(255,255,255,0.03) !important;
+}
+
+/* Avatar image itself: remove filters and masks so it appears crisp,
+   but keep a subtle border if desired (you can tweak the rgba alpha). */
+html body .voiceAvatar_f910d0,
+html body .voiceAvatar_f910d0 img,
+html body img.voiceAvatar_f910d0 {
+  filter: none !important;
+  -webkit-filter: none !important;
+  backdrop-filter: none !important;
+  -webkit-mask-image: none !important;
+  mask-image: none !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  border-radius: 50% !important;
+  outline: none !important;
+}
+
+/* If there's an overlay element around the avatar that adds a blur/tint, force it to be transparent */
+html body .callAvatarMaskContainer_f910d0 > .border_f910d0,
+html body .callAvatarMaskContainer_f910d0 > svg,
+html body .callAvatarMask_f910d0 > svg {
+  background: transparent !important;
+  background-color: transparent !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}
+
+/* Target the tiny sprite/cross layers so they don't add an opaque overlay */
+html body .sprite_c8dbe9,
+html body .spriteWrapper_c8dbe9,
+html body .crossWhite_e42a84,
+html body .base_e42a84 {
+  background: transparent !important;
+  background-color: transparent !important;
+  opacity: 1 !important;
+}
+
+/* As a last resort: if the widget uses inline style backgrounds, unset them */
+html body .voiceCallWrapper_a21736[style*="background"],
+html body .voiceButtonsContainer_e131a9[style*="background"],
+html body [style*="background"] {
+  background: transparent !important;
+  background-color: transparent !important;
+}
+
+/* === Harmonize call bar and corner buttons with server-bar frosted style ===
+   Paste this at the VERY END of gpt.theme.css (after everything else) and
+   then reload/disable+enable the theme or restart Discord.
+
+   Goal:
+   - Use the exact same blur intensity, tint and border as the server (guild)
+     sidebar for the large call bar and all small corner call buttons.
+   - Keep icon SVGs crisp (no blur applied to the icons themselves).
+   - Ensure pseudo-element backgrounds and inner containers use the same tint.
+*/
+
+/* 1) Canonical server-bar values (single source of truth) */
+:root {
+  --glass-blur: 8px !important;
+  --glass-tint: rgba(18,24,32,0.45) !important;
+  --glass-border: rgba(255,255,255,0.06) !important;
+}
+
+/* 2) High-specificity rule to force call bar/popup to match server-bar */
+html body /* anchor to boost specificity */ 
+.callbar, .call-3Lq7b9, .callout-2S2Q8G, .voiceConnected-1Q12kP,
+.voiceCallWrapper_a21736, .voiceButtonsContainer_e131a9, .participant_c8dbe9,
+[class*="voice"][class*="Container"], [class*="call"][class*="bar"],
+body > div[role="presentation"] [style*="position: fixed"][style*="bottom"] {
+  background: transparent !important;
+  background-color: transparent !important;
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(120%) !important;
+  backdrop-filter: blur(var(--glass-blur)) saturate(120%) !important;
+  border: 1px solid var(--glass-border) !important;
+  box-shadow: none !important;
+  color: inherit !important;
+  border-radius: 12px !important;
+}
+
+/* 3) Inner containers slightly reduced blur (keeps legibility but matches look) */
+html body .voiceCallWrapper_a21736 > *, 
+html body .voiceButtonsContainer_e131a9 > *, 
+html body .participant_c8dbe9 > *, 
+html body .callbar * , 
+html body .call-3Lq7b9 * {
+  background: transparent !important;
+  background-color: transparent !important;
+  -webkit-backdrop-filter: blur(calc(var(--glass-blur) - 2px)) saturate(110%) !important;
+  backdrop-filter: blur(calc(var(--glass-blur) - 2px)) saturate(110%) !important;
+}
+
+/* 4) Keep icon buttons crisp (no blur on the icon itself), but ensure their container uses the same tint */
+html body .voiceButtonsContainer_e131a9 .button__67645,
+html body .voiceButtonsContainer_e131a9 .button__201d5,
+html body .callbar button,
+html body [class*="voice"] button,
+html body [class*="call"] button {
+  background: transparent !important;
+  background-color: transparent !important;
+  -webkit-backdrop-filter: none !important; /* icons shouldn't be blurred */
+  backdrop-filter: none !important;
+  box-shadow: none !important;
+  border: none !important;
+  color: inherit !important;
+}
+
+/* Keep the SVG/lottie icons unfiltered and normal color */
+html body .voiceButtonsContainer_e131a9 svg,
+html body .voiceButtonsContainer_e131a9 .lottieIcon__5eb9b,
+html body .voiceButtonsContainer_e131a9 .lottieIconColors__5eb9b,
+html body .callbar svg,
+html body .callbar .lottieIcon__5eb9b {
+  -webkit-filter: none !important;
+  filter: none !important;
+  mix-blend-mode: normal !important;
+  color: inherit !important;
+  opacity: 1 !important;
+  fill: currentColor !important;
+}
+
+/* 5) Pseudo-element backgrounds: force same tint + blur so overlay color matches exactly */
+html body .voiceCallWrapper_a21736::before,
+html body .voiceButtonsContainer_e131a9::before,
+html body .participant_c8dbe9::before,
+html body .callbar::before,
+html body .callout-2S2Q8G::before,
+html body .voiceConnected-1Q12kP::before {
+  content: "" !important;
+  position: absolute !important;
+  inset: 0 !important;
+  background: var(--glass-tint) !important;
+  -webkit-backdrop-filter: blur(var(--glass-blur)) !important;
+  backdrop-filter: blur(var(--glass-blur)) !important;
+  pointer-events: none !important;
+  z-index: 0 !important;
+  border-radius: inherit !important;
+}
+
+/* Ensure content sits above the pseudo background */
+html body .voiceCallWrapper_a21736 > :not(::before),
+html body .voiceButtonsContainer_e131a9 > :not(::before),
+html body .participant_c8dbe9 > :not(::before),
+html body .callbar > :not(::before) {
+  position: relative !important;
+  z-index: 1 !important;
+}
+
+/* 6) Avatar container: remove unintended masks/filters so avatars remain crisp,
+   but keep subtle border consistent with server bar */
+html body .callAvatarMaskContainer_f910d0,
+html body .callAvatarMask_f910d0,
+html body .wrapper_f910d0,
+html body .svg__2338f,
+html body .border_f910d0,
+html body .voiceAvatar_f910d0 {
+  background: transparent !important;
+  background-color: transparent !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+  -webkit-mask-image: none !important;
+  mask-image: none !important;
+  filter: none !important;
+  -webkit-filter: none !important;
+  box-shadow: none !important;
+  border: 1px solid rgba(255,255,255,0.03) !important;
+  border-radius: 50% !important;
+}
+
+/* Avatar <img> specifically: force crisp rendering */
+html body img.voiceAvatar_f910d0 {
+  filter: none !important;
+  -webkit-filter: none !important;
+  backdrop-filter: none !important;
+  -webkit-mask-image: none !important;
+  mask-image: none !important;
+  background: transparent !important;
+  border-radius: 50% !important;
+  box-shadow: none !important;
+}
+
+/* 7) Last-resort fallback: unset inline background styles for fixed widgets (aggressive) */
+html body [style*="background"]:not(.app) {
+  background: transparent !important;
+  background-color: transparent !important;
+}
+
+/* === Quick override — set unified frosted blur to 3px ===
+   Paste this at the VERY END of gpt.theme.css (after everything else),
+   save, then reload/disable+enable the theme or restart Discord. */
+
+:root {
+  --glass-blur: 3px !important;               /* <- changed to 3px as requested */
+  --glass-tint: rgba(18,24,32,0.45) !important;
+  --glass-border: rgba(255,255,255,0.06) !important;
+}
+
+/* Force any call/widget rules to use the canonical --glass-blur value */
+html body /* anchor for specificity */ 
+[class*="voice"], [class*="call"], .callbar, .call-3Lq7b9, .callout-2S2Q8G, .voiceConnected-1Q12kP,
+.voiceCallWrapper_a21736, .voiceButtonsContainer_e131a9, .participant_c8dbe9,
+body > div[role="presentation"] [style*="position: fixed"][style*="bottom"],
+body > div[role="presentation"] [style*="bottom"] {
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(120%) !important;
+  backdrop-filter: blur(var(--glass-blur)) saturate(120%) !important;
+}
+
+/* Inner containers use slightly reduced blur for legibility (now follows 3px base) */
+html body [class*="voice"] > *, html body [class*="call"] > *, html body .callbar * {
+  -webkit-backdrop-filter: blur(calc(var(--glass-blur) - 1px)) saturate(110%) !important;
+  backdrop-filter: blur(calc(var(--glass-blur) - 1px)) saturate(110%) !important;
+}
+
+/* === Hollow Knight Fix Pack (Call bar, DM, Input) === */
+
+/* 1️⃣ Remove weird glass around call avatars */
+html body .callAvatarMaskContainer_f910d0,
+html body .callAvatarMask_f910d0,
+html body .border_f910d0,
+html body .voiceAvatar_f910d0 {
+  background: transparent !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+  border: none !important;
+  box-shadow: none !important;
+  border-radius: 50% !important;
+}
+
+/* 2️⃣ Darker “Enter message” bar for legibility */
+html body .scrollableContainer_d0696b,
+html body .channelTextArea_a7d72e,
+html body .form_a7d72e {
+  background: rgba(18, 24, 32, 0.65) !important;
+  -webkit-backdrop-filter: blur(6px) saturate(120%) !important;
+  backdrop-filter: blur(6px) saturate(120%) !important;
+  border: 1px solid rgba(255,255,255,0.04) !important;
+  border-radius: 10px !important;
+  color: #e5ecff !important;
+}
+
+/* 3️⃣ Glassing the current DM highlight */
+html body .selected_a0d6b5, html body .selected-3s45Ha {
+  background: rgba(18,24,32,0.45) !important;
+  -webkit-backdrop-filter: blur(8px) saturate(120%) !important;
+  backdrop-filter: blur(8px) saturate(120%) !important;
+  border: 1px solid rgba(255,255,255,0.05) !important;
+  box-shadow: inset 0 0 12px rgba(0,0,0,0.35) !important;
+  border-radius: 10px !important;
+}
+
+/* 4️⃣ Tone down the “Call Connected”/voice info brightness */
+html body .voiceConnected-1Q12kP,
+html body .callout-2S2Q8G,
+html body .callBar,
+html body .callbar {
+  background: rgba(18,24,32,0.4) !important;
+  -webkit-backdrop-filter: blur(6px) saturate(120%) !important;
+  backdrop-filter: blur(6px) saturate(120%) !important;
+  border: 1px solid rgba(255,255,255,0.05) !important;
+  box-shadow: none !important;
+  color: #dfe6ff !important;
+}
+
+/* Optional: soft hover glow for DM highlight */
+html body .selected_a0d6b5:hover, html body .selected-3s45Ha:hover {
+  box-shadow: 0 0 12px rgba(150,180,255,0.25) !important;
+}
+
+/* === Message Box Deep Glass Override (Nov 2025 build) === */
+html body .scrollableContainer__74017,
+html body .themedBackground__74017 {
+  background: rgba(10, 12, 18, 0.68) !important; /* darker tone for contrast */
+  -webkit-backdrop-filter: blur(8px) saturate(130%) !important;
+  backdrop-filter: blur(8px) saturate(130%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.04) !important;
+  border-radius: 12px !important;
+  box-shadow: inset 0 0 18px rgba(0, 0, 0, 0.5) !important;
+  color: #e5ecff !important;
+}
+
+/* === Voice Connected Glass Effect Override (Nov 2025) === */
+html body .container_e131a9 {
+  background: rgba(10, 12, 18, 0.65) !important; /* deepened navy-black tint */
+  -webkit-backdrop-filter: blur(10px) saturate(140%) !important;
+  backdrop-filter: blur(10px) saturate(140%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.05) !important;
+  border-radius: 10px !important;
+  box-shadow:
+    inset 0 0 14px rgba(0, 0, 0, 0.6),
+    0 0 6px rgba(0, 0, 0, 0.4) !important;
+  color: #e5ecff !important;
+}
+
+/* Optional: soften transitions when connecting/disconnecting */
+html body .container_e131a9,
+html body .container_e131a9 * {
+  transition: background 0.25s ease, backdrop-filter 0.25s ease;
+}
+
+/* === Custom Discord Home Icon + Glassy Container (2025 build) === */
+
+/* Hide the default logo SVG */
+.wrapper__6e9f8 .childWrapper__6e9f8 svg[aria-hidden="true"] {
+  display: none !important;
+}
+
+/* Glassy circular backdrop restoration */
+.wrapper__6e9f8 {
+  background: rgba(15, 18, 24, 0.55) !important; /* translucent dark glass */
+  backdrop-filter: blur(10px) saturate(160%) !important;
+  -webkit-backdrop-filter: blur(10px) saturate(160%) !important;
+  border-radius: 50% !important;
+  box-shadow:
+    inset 0 0 8px rgba(255, 255, 255, 0.05),
+    0 0 12px rgba(0, 0, 0, 0.6) !important;
+  transition: background 0.25s ease, transform 0.25s ease;
+}
+
+/* Inner wrapper setup */
+.wrapper__6e9f8 .childWrapper__6e9f8 {
+  position: relative !important;
+  background: none !important;
+  overflow: hidden !important;
+}
+
+/* Insert your custom PNG */
+.wrapper__6e9f8 .childWrapper__6e9f8::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("https://raw.githubusercontent.com/notakidoo/Discord-11-COPY/refs/heads/main/3208-hollow-knight.jpg");
+  background-size: 70%;
+  background-repeat: no-repeat;
+  background-position: center;
+  border-radius: 50%;
+  filter: drop-shadow(0 0 6px rgba(0, 0, 0, 0.7));
+  z-index: 3;
+  transition: transform 0.25s ease, filter 0.25s ease;
+}
+
+/* Hover / selected accent */
+.wrapper__6e9f8:hover,
+.wrapper__6e9f8.selected__6e9f8 {
+  background: rgba(20, 24, 33, 0.7) !important;
+  transform: scale(1.05);
+}
+
+.wrapper__6e9f8 .childWrapper__6e9f8:hover::before {
+  transform: scale(1.08);
+  filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.9));
+}
+
+/* === Glassy Active DM Highlight (2025 build) === */
+
+/* Selected DM entry (the active chat) */
+.interactiveSelected__972a0.selected_bf202d,
+.link__972a0[aria-selected="true"],
+.interactive__972a0.selected_bf202d {
+  background: rgba(30, 35, 45, 0.55) !important; /* translucent dark glass */
+  backdrop-filter: blur(10px) saturate(150%) !important;
+  -webkit-backdrop-filter: blur(10px) saturate(150%) !important;
+  border-radius: 12px !important;
+  box-shadow:
+    inset 0 0 8px rgba(255, 255, 255, 0.05),
+    0 0 12px rgba(0, 0, 0, 0.5) !important;
+  transition: background 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+/* Optional: hover for other non-selected DMs */
+.interactive__972a0:hover:not(.selected_bf202d) {
+  background: rgba(25, 30, 40, 0.35) !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
+  transform: scale(1.02);
+}
+
+/* Smooth text contrast */
+.name__20a53,
+.subText__20a53 {
+  color: rgba(255, 255, 255, 0.92) !important;
+  text-shadow: 0 0 4px rgba(0, 0, 0, 0.4);
+}
+
+/* Rounded corners and inner padding fix */
+.interactive_bf202d,
+.link__972a0 {
+  border-radius: 12px !important;
+  overflow: hidden !important;
+  padding: 4px 8px !important;
+}
+
+/* === LUXURY GLASS DISCORD v5 — Enhancement Pack === */
+
+/* 1. Animated Background Drift */
+.layers__960e4 {
+  background-image: url("https://raw.githubusercontent.com/notakidoo/HK-Image-/refs/heads/main/Hollow%20Knight_%20Silksong%204K%20Wallpaper.jpg") !important;
+  background-size: cover !important;
+  background-position: center !important;
+  animation: bgDrift 90s ease-in-out infinite alternate;
+  background-attachment: fixed !important;
+}
+@keyframes bgDrift {
+  from { background-position: center 0%; }
+  to { background-position: center 10%; }
+}
+
+/* 2. Frosted Search Bar + Top Bar */
+.searchBar__5a20a, .titleBar__7c74f, .toolbar__62fb5 {
+  background: rgba(20, 24, 32, 0.55) !important;
+  backdrop-filter: blur(8px) saturate(160%) !important;
+  -webkit-backdrop-filter: blur(8px) saturate(160%) !important;
+  border-radius: 12px !important;
+  box-shadow: inset 0 0 6px rgba(255,255,255,0.05);
+}
+
+/* 3. Button & Hover Glow */
+button, .button__24af7, .iconButton__4b5b7 {
+  transition: box-shadow 0.25s ease, transform 0.25s ease;
+  border-radius: 10px !important;
+}
+button:hover, .button__24af7:hover, .iconButton__4b5b7:hover {
+  box-shadow: 0 0 12px rgba(88, 101, 242, 0.75);
+  transform: scale(1.06);
+}
+
+/* 4. Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(88, 101, 242, 0.4);
+  border-radius: 8px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(88, 101, 242, 0.7);
+}
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.25);
+}
+
+/* 5. Voice Channel Speaking Glow */
+.voiceUser__47dd1 {
+  transition: all 0.3s ease;
+  border-radius: 8px;
+}
+.voiceUser__47dd1.speaking__47dd1 {
+  background: rgba(88, 101, 242, 0.3) !important;
+  box-shadow: 0 0 12px rgba(88, 101, 242, 0.6);
+  transform: scale(1.02);
+}
+
+/* 6. Tooltip Redesign */
+.tooltip__01384 {
+  background: rgba(15, 18, 24, 0.8) !important;
+  backdrop-filter: blur(10px) saturate(140%) !important;
+  -webkit-backdrop-filter: blur(10px) saturate(140%) !important;
+  border-radius: 10px !important;
+  border: 1px solid rgba(255,255,255,0.1);
+  color: #fff !important;
+  box-shadow: 0 0 12px rgba(0,0,0,0.6);
+}
+
+/* Subtle fade-ins for tooltips and modals */
+.tooltip__01384,
+.layerContainer_d9b7dd {
+  animation: fadeInSoft 0.3s ease;
+}
+@keyframes fadeInSoft {
+  from { opacity: 0; transform: translateY(5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* === FIX: Restrict Discord Logo Replacement to Sidebar Only === */
+
+/* Reset all unintended icon overrides */
+svg[aria-hidden="true"][role="img"]::before {
+  content: none !important;
+}
+
+/* Limit logo replacement strictly to the home button */
+.wrapper__6e9f8[data-list-item-id="guildsnav___home"] .childWrapper__6e9f8 svg[aria-hidden="true"] {
+  display: none !important;
+}
+
+.wrapper__6e9f8[data-list-item-id="guildsnav___home"] .childWrapper__6e9f8::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("https://github.com/notakidoo/Discord-11-COPY/blob/main/Adobe%20Express%20-%20file.png?raw=true");
+  background-size: 70%;
+  background-repeat: no-repeat;
+  background-position: center;
+  border-radius: 50%;
+  filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.7));
+  z-index: 3;
+}
+
+/* === FIX: Restore Glass Effect for Video Grid Container === */
+.scroller_affa7e.videoGrid_a21736 {
+  background: rgba(15, 18, 24, 0.55) !important; /* translucent dark glass */
+  backdrop-filter: blur(12px) saturate(150%) !important;
+  -webkit-backdrop-filter: blur(12px) saturate(150%) !important;
+  border-radius: 16px !important;
+  box-shadow:
+    inset 0 0 12px rgba(255, 255, 255, 0.03),
+    0 0 16px rgba(0, 0, 0, 0.6) !important;
+  padding: 8px !important;
+  overflow: hidden !important;
+}
+
+/* Smooth shadow and rounding for video tiles */
+.tile__2f4f7 {
+  border-radius: 12px !important;
+  box-shadow: 0 0 12px rgba(0,0,0,0.4);
+  transition: transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+.tile__2f4f7:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 18px rgba(88,101,242,0.5);
+}
+
+/* Optional: subtle glass overlay for tiles */
+.videoGrid_a21736::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(10, 12, 16, 0.3);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  z-index: 0;
+  pointer-events: none;
+}
+/* === TRUE GLASS FIX for Call Grid (2025 build) === */
+
+/* 1. Force transparency through nested containers */
+.scroller_affa7e,
+.videoGrid_a21736,
+.listItems_affa7e,
+.row_d6271c,
+.tile_d6271c,
+.tile__2f4f7,
+.tileChild__2f4f7,
+.content__2f4f7 {
+  background: transparent !important;
+  background-color: transparent !important;
+}
+
+/* 2. Apply global glass layer directly behind tiles */
+.videoGrid_a21736::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 18, 24, 0.6);
+  backdrop-filter: blur(14px) saturate(160%);
+  -webkit-backdrop-filter: blur(14px) saturate(160%);
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* 3. Add visual depth to each tile */
+.tile__2f4f7 {
+  border-radius: 12px !important;
+  box-shadow:
+    0 0 10px rgba(0, 0, 0, 0.6),
+    inset 0 0 4px rgba(255, 255, 255, 0.05);
+  overflow: hidden !important;
+  position: relative;
+  z-index: 1;
+  background: rgba(20, 24, 32, 0.35) !important; /* subtle internal glass */
+  backdrop-filter: blur(8px) saturate(150%) !important;
+  -webkit-backdrop-filter: blur(8px) saturate(150%) !important;
+  transition: all 0.25s ease;
+}
+
+.tile__2f4f7:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 16px rgba(88, 101, 242, 0.6);
+}
+
+/* 4. Ensure proper stacking so overlay doesn’t block video feed */
+.videoContainer__1505a video,
+.media-engine-video {
+  position: relative !important;
+  z-index: 2;
+  border-radius: 12px !important;
+}
+
+/* 5. Clean up borders / separators that flatten depth */
+.border__2f4f7 {
+  background: none !important;
+  border: none !important;
+}
+/* === Simulated Glass Layer for Video Grid (works with GPU compositor) === */
+.videoGrid_a21736 {
+  position: relative !important;
+  overflow: hidden !important;
+  border-radius: 16px !important;
+}
+
+/* Frosted overlay placed ABOVE the video tiles */
+.videoGrid_a21736::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: rgba(10, 12, 16, 0.45); /* translucent tint */
+  filter: blur(14px);
+  z-index: 3; /* sits above flat surface */
+  mix-blend-mode: overlay; /* fakes depth interaction */
+}
+
+/* Give each tile slight depth and shadow */
+.tile__2f4f7 {
+  border-radius: 12px !important;
+  background: rgba(20, 24, 32, 0.35) !important;
+  box-shadow: 0 0 10px rgba(0,0,0,0.4);
+  position: relative;
+  z-index: 4;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.tile__2f4f7:hover {
+  transform: scale(1.03);
+  box-shadow: 0 0 18px rgba(88,101,242,0.5);
+}
+:root {
+  --accent-color: #5865F2;
+  --accent-color-hover: #6E77F2;
+  --accent-color-glow: rgba(88, 101, 242, 0.5);
+}
+.guilds__2b93a {
+  transition: width 0.3s ease;
+}
+.guilds__2b93a:hover {
+  width: 85px !important;
+}
+.avatarSpeaking__1505a {
+  box-shadow: 0 0 15px var(--accent-color-glow) !important;
+  animation: pulseSpeak 1.2s ease-in-out infinite;
+}
+@keyframes pulseSpeak {
+  0%, 100% { transform: scale(1); opacity: 0.9; }
+  50% { transform: scale(1.08); opacity: 1; }
+}
+.appMount__51c33,
+.container__5e434,
+.layers__960e4,
+.chat__52833,
+.sidebar__5e434 {
+  border-radius: 16px !important;
+  overflow: hidden !important;
+}
+
